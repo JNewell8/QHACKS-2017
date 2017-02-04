@@ -18,16 +18,7 @@ const
   https = require('https'),  
   request = require('request');
 
-let Wit = null;
-let log = null;
-try {
-    // if running from repo
-    Wit = require('../').Wit;
-    log = require('../').log;
-} catch (e) {
-    Wit = require('node-wit').Wit;
-    log = require('node-wit').log;
-}
+const {Wit, log} = require('node-wit');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -43,7 +34,9 @@ app.use(express.static('public'));
  */
 
 // Wit.ai parameters
-const WIT_TOKEN = process.env.WIT_TOKEN;
+const WIT_TOKEN = (process.env.WIT_TOKEN) ?
+    process.env.WIT_TOKEN :
+    config.get('WIT_TOKEN');
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
