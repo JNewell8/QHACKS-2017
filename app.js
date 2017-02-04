@@ -98,17 +98,30 @@ const findOrCreateSession = (fbid) => {
     return sessionId;
 };
 
+const firstEntityValue = (entities, entity) => {
+    const val = entities && entities[entity] &&
+        Array.isArray(entities[entity]) &&
+        entities[entity].length > 0 &&
+        entities[entity][0].value
+        ;
+    if (!val) {
+        return null;
+    }
+    return typeof val === 'object' ? val.value : val;
+};
+
 // Our bot actions
 const actions = {
     send(sessionId, text) {
+        console.log("sessionId: " + sessionId.sessionId);
         // Our bot has something to say!
         // Let's retrieve the Facebook user whose session belongs to
-        const recipientId = sessions[sessionId].fbid;
+        const recipientId = sessions[sessionId.sessionId].fbid;
         if (recipientId) {
             // Yay, we found our recipient!
             // Let's forward our bot response to her.
             // We return a promise to let our bot know when we're done sending
-            return fbMessage(recipientId, text)
+            return fbMessage(recipientId, text.text)
                 .then(() => null)
                 .catch((err) => {
                     console.error(
@@ -299,7 +312,7 @@ app.post('/webhook', (req, res) => {
                             .catch(console.error);
                     } else if (text) {
                         // We received a text message
-                        console.error('Recieved text message: ',text);
+                        console.log('Recieved text message: '+text);
                         // Let's forward the message to the Wit.ai Bot Engine
                         // This will run all actions until our bot has nothing left to do
                         wit.runActions(
@@ -1050,4 +1063,7 @@ app.listen(app.get('port'), function() {
 });
 
 module.exports = app;
+
+//-----------------------------------------------------------------
+// Spoontacular Specific Api
 
