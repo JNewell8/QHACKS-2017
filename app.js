@@ -16,7 +16,8 @@ const
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),  
-  request = require('request');
+  request = require('request'),
+  unirest = require('unirest');
 
 let Wit = null;
 let log = null;
@@ -144,7 +145,7 @@ const actions = {
     },
     getRecipe({context, entities}) {
     return new Promise(function(resolve, reject) {
-        var type = firstEntityValue(entities, "mealTime")
+        var type = firstEntityValue(entities, "type")
         var query = firstEntityValue(entities, "meal")
         var flavor = firstEntityValue(entities, "flavor")
         var includeIngredients = firstEntityValue(entities, "ingredients")
@@ -152,9 +153,7 @@ const actions = {
         
         var InstructionsRequired = true;
         var number = 1;
-        
-        var api_ID = 'e041f1a3';
-        var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
+       
         //Cuisine
         if (cuisine){
             cuisine = ''
@@ -181,22 +180,24 @@ const actions = {
             if(flavor){
                for (var u of entities.flavor){
                     console.log(u.value);
-                    query = += u.value + ',';
+                    query += u.value + ',';
                 } 
             }
         }
         //type
         if(type){
             type = ''
-            for (var u of entities.mealTime){
+            for (var u of entities.type){
                 console.log(u.value);
                 type += u.value + ',';
             }
         }
-        
-        context.recipe = string;
+
+        console.log("type: " + type + " query: " + query + " flavour: " + flavor + " ingredients: " + includeIngredients + " cuisine: " + cuisine);
+        var result = QueryRecipeApi(type, query, flavor, includeIngredients, cuisine);
+        console.log(result);
+        context.recipe = result;
         delete context.missingMealTime;
-        
         return resolve(context);
         });
     },
@@ -1090,11 +1091,14 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine) {
     if (ingredients) { url += "&ingredients=" + ingredients };
     if (cuisine) { url += "&cuisine=" + cuisine };
 
+    console.log("Url: " + url);
     // These code snippets use an open-source library. http://unirest.io/nodejs
-    unirest.get(url)
+    /*unirest.get(url)
         .header("X-Mashape-Key", SPOONACULAR_API_KEY)
         .header("Accept", "application/json")
         .end(function (result) {
             console.log(result.status, result.headers, result.body);
+            return result.body;
         });
+    */
 }
