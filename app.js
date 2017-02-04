@@ -143,53 +143,63 @@ const actions = {
         }
     },
     getRecipe({context, entities}) {
-        return new Promise(function (resolve, reject) {
-            var mealTime = firstEntityValue(entities, "mealTime")
-            var meal = firstEntityValue(entities, "meal")
-            var flavor = firstEntityValue(entities, "flavor")
-            var ingredients = firstEntityValue(entities, "ingredients")
-            var mealType = firstEntityValue(entities, "mealType")
-            var api_ID = 'e041f1a3';
-            var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
-            var content;
-            /*
-            request('https://api.edamam.com/search?q=chicken&app_id=' + api_ID + '&app_key=' + app_key, function (error, response, body) {
-              if (!error && response.statusCode == 200) {
-                content = body;
-              }
-            })
-            */
-            context.recipe = ''
-            if (meal) {
-                context.recipe = context.recipe + meal;
+    return new Promise(function(resolve, reject) {
+        var type = firstEntityValue(entities, "mealTime")
+        var query = firstEntityValue(entities, "meal")
+        var flavor = firstEntityValue(entities, "flavor")
+        var includeIngredients = firstEntityValue(entities, "ingredients")
+        var cuisine = firstEntityValue(entities, "cuisine")
+        
+        var InstructionsRequired = true;
+        var number = 1;
+        
+        var api_ID = 'e041f1a3';
+        var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
+        //Cuisine
+        if (cuisine){
+            cuisine = ''
+            for (var u of entities.cuisine){
+                console.log(u.value);
+                cuisine += u.value + ',';
             }
-            else {
-                context.recipe = 'Something';
+        }
+        //includeIngredients
+        if(includeIngredients){
+            includeIngredients = ''
+            for (var u of entities.ingredients){
+                console.log(u.value);
+                includeIngredients += u.value + ',';
             }
-            if (mealTime) {
-                context.recipe = context.recipe + ' for ' + mealTime
+        }
+        //query
+        if(query){
+            query = ''
+            for (var u of entities.meal){
+                console.log(u.value);
+                query += u.value + ',';
             }
-            if (flavor) {
-                var flavor = '';
-                for (var u of entities.flavor) {
+            if(flavor){
+               for (var u of entities.flavor){
                     console.log(u.value);
-                    flavor = flavor + u.value + ',';
-                }
-                context.recipe = context.recipe + ' that is ' + flavor;
+                    query = += u.value + ',';
+                } 
             }
-            if (ingredients) {
-                var ingredients = '';
-                for (var u of entities.ingredients) {
-                    console.log(u.value);
-                    ingredients = ingredients + u.value + ',';
-                }
-                context.recipe = context.recipe + ' using ' + ingredients;
+        }
+        //type
+        if(type){
+            type = ''
+            for (var u of entities.mealTime){
+                console.log(u.value);
+                type += u.value + ',';
             }
-            delete context.missingMealTime;
-
-            return resolve(context);
+        }
+        
+        context.recipe = string;
+        delete context.missingMealTime;
+        
+        return resolve(context);
         });
-    }
+    },
 };
 
 // Setting up our bot
