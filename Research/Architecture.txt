@@ -1,0 +1,8 @@
+ARCHITECTURE
+
+From start:
+Query recipes by meal time (breakfast, lunch, dinner)
+Query recipes by ingredients
+Query recipes by specific name
+Update settings (e.g. tell bot you are vegan will update prefrences)
+Help instructions
