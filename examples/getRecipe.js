@@ -7,7 +7,6 @@ var http = require("http");
 var https = require("https");
 var request = require("request");
 
-
 try {
   // if running from repo
   Wit = require('../').Wit;
@@ -53,7 +52,6 @@ const actions = {
   return new Promise(function(resolve, reject) {
     var mealTime = firstEntityValue(entities, "mealTime")
     if (mealTime) {
-               
         var api_ID = 'e041f1a3';
         var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
         var content;
@@ -62,30 +60,21 @@ const actions = {
             content = body;
           }
         })
-      context.recipe = content;//results.Recipe[1].uri; // we should call a weather API here
-      delete context.missingLocation;
+        body = JSON.parse(content);
+        context.recipe = body.hits[1].recipe.uri;
+        delete context.missingLocation;
     } else {
       context.missingLocation = true;
       delete context.recipe;
     }
     return resolve(context);
   });
-},
+}
+,
 useIngredients({context, entities}) {
   return new Promise(function(resolve, reject) {
     var meal = firstEntityValue(entities, "meal")
     if (meal) {
-        var api_key = 'e041f1a3';
-        var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
-        var body = getJSON("https://api.edamam.com/search?q=chicken&app_id=" + api_key + "&app_key=" + app_key,
-        function(err, data) {
-          if (err != null) {
-            alert("Something went wrong: " + err);
-          } else {
-            alert("Your query count: " + data.query.count);
-          }
-        }); 
-      context.recipe = 'rainy in ' + body;//results.Recipe[1].uri; // we should call a weather API here
       
       delete context.missingLocation;
     } else {
@@ -96,9 +85,6 @@ useIngredients({context, entities}) {
   });
 },
 };
-
-
-
 
 const client = new Wit({accessToken, actions});
 interactive(client);
