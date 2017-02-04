@@ -2,5 +2,5 @@
     "appSecret": "16b5b26e5ace66db1195e239bc9d3553",
     "pageAccessToken": "EAAB5zJ2QljQBAMyJ0M8EJZA6Qku2LYHkh1nrlIyHMo0o2fSLY5WTT444vdxZCFxR5HhyKQjKkLLT94LXRA6onHkJYb84ylvhj6DGPNY8U8p1WDHYNFiGjEisxoab0OLj4W9FJCGOqk3ZBtxZCewdUODNvS7CcGSvJXOIAZC5kggZDZD",
     "validationToken": "VERIFY_THIS_SERVICE_BY_MY_VOICE",
-    "serverURL": "https://af0a68c6.ngrok.io"
+    "serverURL": "https://secure-headland-93290.herokuapp.com"
 }
