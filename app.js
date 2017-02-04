@@ -150,10 +150,20 @@ const actions = {
         var flavor = firstEntityValue(entities, "flavor")
         var includeIngredients = firstEntityValue(entities, "ingredients")
         var cuisine = firstEntityValue(entities, "cuisine")
+        var intolerances = firstEntityValue(entities, "intolerances")
         
         var InstructionsRequired = true;
         var number = 1;
-       
+        
+        //Intolerances
+        if (intolerances){
+            intolerances = ''
+            for (var u of entities.intolerances){
+                intolerances.log(u.value);
+                intolerances += u.value + ',';
+            }
+            intolerances = intolerances.slice(0,-1);
+        }
         //Cuisine
         if (cuisine){
             cuisine = ''
@@ -161,6 +171,7 @@ const actions = {
                 console.log(u.value);
                 cuisine += u.value + ',';
             }
+            cuisine = cuisine.slice(0,-1);
         }
         //includeIngredients
         if(includeIngredients){
@@ -169,6 +180,7 @@ const actions = {
                 console.log(u.value);
                 includeIngredients += u.value + ',';
             }
+            includeIngredients = includeIngredients.slice(0,-1);
         }
         //query
         if(query){
@@ -180,9 +192,10 @@ const actions = {
             if(flavor){
                for (var u of entities.flavor){
                     console.log(u.value);
-                    query += u.value + ',';
-                } 
+                    query = += u.value + ',';
+                }                
             }
+            query = query.slice(0,-1);
         }
         //type
         if(type){
@@ -191,6 +204,7 @@ const actions = {
                 console.log(u.value);
                 type += u.value + ',';
             }
+            type = type.slice(0,-1);
         }
 
         console.log("type: " + type + " query: " + query + " flavour: " + flavor + " ingredients: " + includeIngredients + " cuisine: " + cuisine);
