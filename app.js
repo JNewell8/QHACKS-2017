@@ -144,12 +144,20 @@ const actions = {
         var flavor = firstEntityValue(entities, "flavor")
         var includeIngredients = firstEntityValue(entities, "ingredients")
         var cuisine = firstEntityValue(entities, "cuisine")
+        var intolerances = firstEntityValue(entities, "intolerances")
         
         var InstructionsRequired = true;
         var number = 1;
         
-        var api_ID = 'e041f1a3';
-        var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
+        //Intolerances
+        if (intolerances){
+            intolerances = ''
+            for (var u of entities.intolerances){
+                intolerances.log(u.value);
+                intolerances += u.value + ',';
+            }
+            intolerances = intolerances.slice(0,-1);
+        }
         //Cuisine
         if (cuisine){
             cuisine = ''
@@ -157,6 +165,7 @@ const actions = {
                 console.log(u.value);
                 cuisine += u.value + ',';
             }
+            cuisine = cuisine.slice(0,-1);
         }
         //includeIngredients
         if(includeIngredients){
@@ -165,6 +174,7 @@ const actions = {
                 console.log(u.value);
                 includeIngredients += u.value + ',';
             }
+            includeIngredients = includeIngredients.slice(0,-1);
         }
         //query
         if(query){
@@ -177,8 +187,9 @@ const actions = {
                for (var u of entities.flavor){
                     console.log(u.value);
                     query = += u.value + ',';
-                } 
+                }                
             }
+            query = query.slice(0,-1);
         }
         //type
         if(type){
@@ -187,6 +198,7 @@ const actions = {
                 console.log(u.value);
                 type += u.value + ',';
             }
+            type = type.slice(0,-1);
         }
         
         context.recipe = string;
