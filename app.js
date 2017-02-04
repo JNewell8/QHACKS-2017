@@ -143,7 +143,7 @@ const actions = {
             return Promise.resolve()
         }
     },
-    getRecipe({context, entities}) {
+    getRecipe(context, entities) {
     return new Promise(function(resolve, reject) {
         var type = firstEntityValue(entities, "type")
         var query = firstEntityValue(entities, "meal")
