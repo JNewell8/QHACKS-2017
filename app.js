@@ -192,7 +192,7 @@ const actions = {
             if(flavor){
                for (var u of entities.flavor){
                     console.log(u.value);
-                    query = += u.value + ',';
+                    query += u.value + ',';
                 }                
             }
             query = query.slice(0,-1);
