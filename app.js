@@ -47,6 +47,11 @@ const WIT_TOKEN = (process.env.WIT_TOKEN) ?
     process.env.WIT_TOKEN :
     config.get('WIT_TOKEN');
 
+// Spoonacular API key
+const SPOONACULAR_API_KEY = (process.env.SPOONACULAR_API_KEY) ?
+    process.env.SPOONACULAR_API_KEY :
+    config.get('SPOONACULAR_API_KEY');
+
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
   process.env.MESSENGER_APP_SECRET :
@@ -1067,3 +1072,19 @@ module.exports = app;
 //-----------------------------------------------------------------
 // Spoontacular Specific Api
 
+function QueryRecipeApi(type, meal, flavour, ingredients, cuisine) {
+    var url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?";
+    if (type) { url += "&type=" + type };
+    if (meal) { url += "&meal=" + meal };
+    if (flavour) { url += "&flavour=" + flavour };
+    if (ingredients) { url += "&ingredients=" + ingredients };
+    if (cuisine) { url += "&cuisine=" + cuisine };
+
+    // These code snippets use an open-source library. http://unirest.io/nodejs
+    unirest.get(url)
+        .header("X-Mashape-Key", SPOONACULAR_API_KEY)
+        .header("Accept", "application/json")
+        .end(function (result) {
+            console.log(result.status, result.headers, result.body);
+        });
+}
