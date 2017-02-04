@@ -1,0 +1,7 @@
+http://food2fork.com/about/api
+http://api2.bigoven.com
+https://www.quora.com/Are-there-any-free-APIs-for-food-recipes
+https://developer.yummly.com
+https://spoonacular.com/food-api
+https://developer.edamam.com
+https://market.mashape.com/spoonacular/recipe-food-nutrition
