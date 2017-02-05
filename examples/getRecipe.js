@@ -51,68 +51,103 @@ const actions = {
   },
   getRecipe({context, entities}) {
   return new Promise(function(resolve, reject) {
-    var mealTime = firstEntityValue(entities, "mealTime")
-    var meal = firstEntityValue(entities, "meal")
-    var flavor = firstEntityValue(entities, "flavor")
-    var ingredients = firstEntityValue(entities, "ingredients")
-    var mealType = firstEntityValue(entities, "mealType")
+      
+    var type = firstEntityValue(context, "type")
+    var query = firstEntityValue(context, "query")
+    var flavor = firstEntityValue(context, "flavor")
+    var includeIngredients = firstEntityValue(context, "ingredients")
+    var cuisine = firstEntityValue(context, "cuisine")
+    var intolerances = firstEntityValue(entities, "intolerances")
+    
+    var InstructionsRequired = true;
+    var number = 1;
+    
     var api_ID = 'e041f1a3';
     var app_key = '2598fe134189c3ff6692c77e1e80a4c3';
-    var content;
-    /*
-    request('https://api.edamam.com/search?q=chicken&app_id=' + api_ID + '&app_key=' + app_key, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        content = body;
-      }
-    })
-    */
-    context.recipe = ''
-    if(meal) {
-        context.recipe = context.recipe + meal;
-    }
-    else{
-        context.recipe = 'Something';
-    }
-    if(mealTime){
-        context.recipe = context.recipe + ' for ' + mealTime
-    }
-    if (flavor){
-        var flavor = '';
-        for (var u of entities.flavor){
-            console.log(u.value);
-            flavor = flavor + u.value + ',';
+    var string = "Test: ";
+    //Intolerances
+        if (intolerances){
+            intolerances = ''
+            for (var u of entities.intolerances){
+                intolerances.log(u.value);
+                string += u.value + ',';
+            }
         }
-      context.recipe = context.recipe + ' that is ' + flavor;  
-    }
-    if (ingredients){
-        var ingredients = '';
-        for (var u of entities.ingredients){
+    //Cuisine
+    if (cuisine){
+        cuisine = ''
+        for (var u of context.cuisine){
             console.log(u.value);
-            ingredients = ingredients + u.value + ',';
+            string += u.value + ',';
         }
-        context.recipe = context.recipe + ' using ' + ingredients;
     }
-    delete context.missingMealTime;
+    //includeIngredients
+    if(includeIngredients){
+        includeIngredients = ''
+        for (var u of context.ingredients){
+            console.log(u.value);
+            string += u.value + ',';
+        }
+    }
+    //query
+    if(query){
+        query = ''
+        for (var u of context.query){
+            console.log(u.value);
+            string += u.value + ',';
+        }
+        if(flavor){
+           for (var u of context.flavor){
+                console.log(u.value);
+                string += u.value + ',';
+            } 
+        }
+    }
+    //type
+    if(type){
+        type = ''
+        for (var u of context.type){
+            console.log(u.value);
+            string += u.value + ',';
+        }
+    }
     
+    context.recipe = string;
+    delete context.type;
+    delete context.query;
+    delete context.flavor;
+    delete context.includeIngredients;
+    delete context.cuisine;
     return resolve(context);
   });
-}
-,
-/*
-useIngredients({context, entities}) {
+},
+helper({context, entities}) {
   return new Promise(function(resolve, reject) {
-    var meal = firstEntityValue(entities, "meal")
-    if (meal) {
       
-      delete context.missingLocation;
-    } else {
-      context.missingLocation = true;
-      delete context.recipe;
+    var type = firstEntityValue(entities, "type")
+    var query = firstEntityValue(entities, "query")
+    var flavor = firstEntityValue(entities, "flavor")
+    var includeIngredients = firstEntityValue(entities, "ingredients")
+    var cuisine = firstEntityValue(entities, "cuisine")
+    
+    if(type){
+        context.type = entities.type;
+    }
+    if(query){
+        context.query = entities.query;
+    }
+    if(flavor){
+        context.flavor = entities.flavor;
+    }
+    if(includeIngredients){
+        context.includeIngredients = entities.includeIngredients;
+    }
+    if(cuisine){
+        context.cuisine = entities.cuisine;
     }
     return resolve(context);
   });
 },
-*/
 };
 
 const client = new Wit({accessToken, actions});
