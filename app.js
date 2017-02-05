@@ -1130,6 +1130,8 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
             context.recipe = "No results!";
             if (result.body) {
                 var hits = result.body.hits;
+                if (hits.length > 0)
+                    context.recipe = "";
                 console.log(hits);
                 for (var i = 0; i < hits.length; i++) {
                     var hit = hits[i];
