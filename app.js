@@ -1140,12 +1140,12 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
                         context.recipe += hit.recipe.label + "\n";
                         context.recipe += "Calories: " + hit.recipe.calories + "\n";
                         context.recipe += "Servings: " + hit.recipe.yield + "\n";
-                        for (var j = 0; j < hit.recipe.diet.length; j++) {
+                        for (var j = 0; j < hit.recipe.dietLabels.length; j++) {
                             context.recipe += hit.recipe.diet[j] + " ";
                         }
                         context.recipe += "\n";
-                        for (var j = 0; j < hit.recipe.health.length; j++) {
-                            context.recipe += hit.recipe.health[j];
+                        for (var j = 0; j < hit.recipe.healthLabels.length; j++) {
+                            context.recipe += hit.recipe.healthLabels[j];
                         }
                         context.recipe += hit.recipe.url + "\n\n";
                     }
