@@ -161,12 +161,13 @@ const actions = {
             var includeIngredients = firstEntityValue(context, "ingredients");
             var cuisine = firstEntityValue(context, "cuisine");
             var diet = firstEntityValue(context, "diet");
+            var health = firstEntityValue(context, "health");
             var intolerances = firstEntityValue(context, "intolerances");
 
             var InstructionsRequired = true;
             var number = 1;
 
-            return QueryRecipeApi(type, query, flavor, includeIngredients, cuisine, diet, InstructionsRequired, number, resolve, context);
+            return QueryRecipeApi(type, query, flavor, includeIngredients, cuisine, diet, health, InstructionsRequired, number, resolve, context);
         });
     },
     helper({context, entities}) {
@@ -1090,10 +1091,8 @@ module.exports = app;
 //-----------------------------------------------------------------
 // Spoontacular Specific Api
 
-function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, InstructionsRequired, number, resolve, context) {
+function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health, InstructionsRequired, number, resolve, context) {
     var url = "https://api.edamam.com/search?";
-    var health = "";
-    //if (type) { url += "&type=" + type };
     url += "&app_id=" + EDAMAM_APP_ID;
     url += "&app_key=" + EDAMAM_APP_KEY;
     url += "&from=0&to=3"; 
