@@ -1151,10 +1151,18 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
                         }
                         console.log(healthLabel);
                         if (dietLabel > -1) {
-                            context.recipe += hit.recipe.dietLabels[dietLabel] + "\n";
+                            context.recipe += hit.recipe.dietLabels[dietLabel];
+                            console.log(hit.recipe.dietLabels[dietLabel]);
                         }
                         if (healthLabel > -1) {
+                            if (dietLabel > -1)
+                                context.recipe += " | ";
                             context.recipe += hit.recipe.healthLabels[healthLabel] + "\n";
+                            console.log(hit.recipe.healthLabels[healthLabel]);
+
+                        }
+                        else {
+                            context.recipe += "\n";
                         }
                         context.recipe += hit.recipe.url + "\n\n";
                     }
