@@ -1138,15 +1138,23 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
                     for (var i = 0; i < hits.length; i++) {
                         var hit = hits[i];
                         context.recipe += hit.recipe.label + "\n";
-                        context.recipe += "Calories: " + Math.Round(hit.recipe.calories) + "\n";
+                        context.recipe += "Calories: " + Math.round(hit.recipe.calories) + "\n";
                         context.recipe += "Servings: " + hit.recipe.yield + "\n";
-                        for (var j = 0; j < hit.recipe.dietLabels.length; j++) {
-                            console.log(hit.recipe.dietLabels[j]);
-                            context.recipe += hit.recipe.dietLabels[j] + " ";
+                        var dietLabel = -1;
+                        var healthLabel = -1;
+                        if (diet) {
+                            dietLabel = hit.recipe.dietLabels.findIndex(item => diet.toLowerCase() === item.toLowerCase());
                         }
-                        //context.recipe += "\n";
-                        for (var j = 0; j < hit.recipe.healthLabels.length; j++) {
-                            //context.recipe += hit.recipe.healthLabels[j];
+                        console.log(dietLabel);
+                        if (health) {
+                            healthLabel = hit.recipe.healthLabels.findIndex(item => health.toLowerCase() === item.toLowerCase());
+                        }
+                        console.log(healthLabel);
+                        if (dietLabel > -1) {
+                            context.recipe += hit.recipe.dietLabels[dietLabel] + "\n";
+                        }
+                        if (healthLabel > -1) {
+                            context.recipe += hit.recipe.healthLabels[healthLabel] + "\n";
                         }
                         context.recipe += hit.recipe.url + "\n\n";
                     }
