@@ -1105,8 +1105,6 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
     if (type) { query += " " + type };
     if (flavour) { query += " " + flavour };
     if (cuisine) { query += " " + cuisine };
-    if (diet) { query += " " + diet };
-    if (health) { query += " " + health };
 
     url += "&q=" + query;
     if (diet) { url += "&diet=" + diet; }
