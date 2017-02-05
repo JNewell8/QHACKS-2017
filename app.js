@@ -1091,11 +1091,22 @@ module.exports = app;
 
 function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, InstructionsRequired, number, resolve, context) {
     var url = "https://api.edamam.com/search?";
+    var health = "";
     //if (type) { url += "&type=" + type };
     url += "&app_id=" + EDAMAM_APP_ID;
     url += "&app_key=" + EDAMAM_APP_KEY;
     url += "&from=0&to=3"; 
-    if (meal) { url += "&q=" + meal };
+    var query = "";
+    if (meal) { query += meal };
+    if (type) { query += " " + type };
+    if (flavour) { query += " " + flavour };
+    if (cuisine) { query += " " + cuisine };
+    if (diet) { query += " " + diet };
+    if (health) { query += " " + health };
+
+    url += "&q=" + query;
+    if (diet) { url += "&diet=" + diet; }
+    if (health) { url += "&health=" + health; }
     url = url.replace('&', '');
     console.log("Url: " + url);
     unirest.get(url)
@@ -1113,6 +1124,8 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
             context.querybreakdown += cuisine ? cuisine : "N/A";
             context.querybreakdown += "\nDiet: ";
             context.querybreakdown += diet ? diet : "N/A";
+            context.querybreakdown += "\nHealth: ";
+            context.querybreakdown += health ? health : "N/A";
             context.recipe = "";
             if (result.body) {
                 var hits = result.body.hits;
@@ -1122,6 +1135,9 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
                     context.recipe += hit.recipe.label + "\n";
                     context.recipe += hit.recipe.url + "\n\n";
                 }
+            }
+            else {
+                context.recipe = "No results!";
             }
             context.done = true;
             delete context.type;
