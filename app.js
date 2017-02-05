@@ -145,66 +145,66 @@ const actions = {
     },
     getRecipe(context, entities) {
     return new Promise(function(resolve, reject) {
-        var type = firstEntityValue(entities, "type")
-        var query = firstEntityValue(entities, "query")
-        var flavor = firstEntityValue(entities, "flavor")
-        var includeIngredients = firstEntityValue(entities, "ingredients")
-        var cuisine = firstEntityValue(entities, "cuisine")
-        var intolerances = firstEntityValue(entities, "intolerances")
-        
+        var type = firstEntityValue(context, "type")
+        var query = firstEntityValue(context, "query")
+        var flavor = firstEntityValue(context, "flavor")
+        var includeIngredients = firstEntityValue(context, "ingredients")
+        var cuisine = firstEntityValue(context, "cuisine")
+        var intolerances = firstEntityValue(context, "intolerances")
+
         var InstructionsRequired = true;
         var number = 1;
-        
+
         //Intolerances
-        if (intolerances){
+        if (intolerances) {
             intolerances = ''
-            for (var u of entities.intolerances){
+            for (var u of context.intolerances) {
                 intolerances.log(u.value);
                 intolerances += u.value + ',';
             }
-            intolerances = intolerances.slice(0,-1);
+            intolerances = intolerances.slice(0, -1);
         }
         //Cuisine
-        if (cuisine){
+        if (cuisine) {
             cuisine = ''
-            for (var u of entities.cuisine){
+            for (var u of context.cuisine) {
                 console.log(u.value);
                 cuisine += u.value + ',';
             }
-            cuisine = cuisine.slice(0,-1);
+            cuisine = cuisine.slice(0, -1);
         }
         //includeIngredients
-        if(includeIngredients){
+        if (includeIngredients) {
             includeIngredients = ''
-            for (var u of entities.ingredients){
+            for (var u of context.ingredients) {
                 console.log(u.value);
                 includeIngredients += u.value + ',';
             }
-            includeIngredients = includeIngredients.slice(0,-1);
+            includeIngredients = includeIngredients.slice(0, -1);
         }
         //query
-        if(query){
+        if (query) {
             query = ''
-            for (var u of entities.meal){
+            for (var u of context.query) {
                 console.log(u.value);
                 query += u.value + ',';
             }
-            if(flavor){
-               for (var u of entities.flavor){
+            if (flavor) {
+                for (var u of context.flavor) {
                     console.log(u.value);
                     query += u.value + ',';
-                }                
+                }
             }
-            query = query.slice(0,-1);
+            query = query.slice(0, -1);
         }
         //type
-        if(type){
+        if (type) {
             type = ''
-            for (var u of entities.type){
+            for (var u of context.type) {
                 console.log(u.value);
                 type += u.value + ',';
             }
-            type = type.slice(0,-1);
+            type = type.slice(0, -1);
         }
 
         console.log("type: " + type + " query: " + query + " flavour: " + flavor + " ingredients: " + includeIngredients + " cuisine: " + cuisine);
