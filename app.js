@@ -1133,6 +1133,8 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
                 for (var i = 0; i < hits.length; i++) {
                     var hit = hits[i];
                     context.recipe += hit.recipe.label + "\n";
+                    context.recipe += hit.recipe.summary + "\n";
+                    context.recipe += "Servings: " + hit.recipe.yield + "\n";
                     context.recipe += hit.recipe.url + "\n\n";
                 }
             }
