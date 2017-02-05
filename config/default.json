@@ -4,5 +4,7 @@
     "validationToken": "VERIFY_THIS_SERVICE_BY_MY_VOICE",
     "serverURL": "https://secure-headland-93290.herokuapp.com",
 	"WIT_TOKEN": "R3TAHBHBC3BO55R5GOCYTSCDFOUYGPU5",
-	"SPOONACULAR_API_KEY": "yriOnwquOCmshFHLTsJloxazL2zvp12JiE3jsnBxLcMjmMc4yO"
+	"SPOONACULAR_API_KEY": "yriOnwquOCmshFHLTsJloxazL2zvp12JiE3jsnBxLcMjmMc4yO",
+	"EDAMAM_APP_ID": "262ac6f9",
+	"EDAMAM_APP_KEY": "736ba7cfdc8f9edb20717b07d021ac4e"
 }

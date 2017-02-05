@@ -53,6 +53,16 @@ const SPOONACULAR_API_KEY = (process.env.SPOONACULAR_API_KEY) ?
     process.env.SPOONACULAR_API_KEY :
     config.get('SPOONACULAR_API_KEY');
 
+// Edamam API ID
+const EDAMAM_APP_ID = (process.env.EDAMAM_APP_ID) ?
+    process.env.EDAMAM_APP_ID :
+    config.get('EDAMAM_APP_ID');
+
+// Edamam API ID
+const EDAMAM_APP_KEY = (process.env.EDAMAM_APP_KEY) ?
+    process.env.EDAMAM_APP_KEY :
+    config.get('EDAMAM_APP_KEY');
+
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
   process.env.MESSENGER_APP_SECRET :
@@ -118,16 +128,15 @@ const firstEntityValue = (entities, entity) => {
 
 // Our bot actions
 const actions = {
-    send(sessionId, text) {
-        console.log("sessionId: " + sessionId.sessionId);
+    send({sessionId}, {text}) {
         // Our bot has something to say!
         // Let's retrieve the Facebook user whose session belongs to
-        const recipientId = sessions[sessionId.sessionId].fbid;
+        const recipientId = sessions[sessionId].fbid;
         if (recipientId) {
             // Yay, we found our recipient!
             // Let's forward our bot response to her.
             // We return a promise to let our bot know when we're done sending
-            return fbMessage(recipientId, text.text)
+            return fbMessage(recipientId, text)
                 .then(() => null)
                 .catch((err) => {
                     console.error(
@@ -143,111 +152,61 @@ const actions = {
             return Promise.resolve()
         }
     },
-    getRecipe(context, entities) {
-    return new Promise(function(resolve, reject) {
-        var type = firstEntityValue(context, "type")
-        var query = firstEntityValue(context, "query")
-        var flavor = firstEntityValue(context, "flavor")
-        var includeIngredients = firstEntityValue(context, "ingredients")
-        var cuisine = firstEntityValue(context, "cuisine")
-        var intolerances = firstEntityValue(context, "intolerances")
+    getRecipe({context, entities}) {
+        return new Promise(function (resolve, reject) {
+            console.log("calling get recipe");
+            var type = firstEntityValue(context, "type");
+            var query = firstEntityValue(context, "query");
+            var flavor = firstEntityValue(context, "flavor");
+            var includeIngredients = firstEntityValue(context, "ingredients");
+            var cuisine = firstEntityValue(context, "cuisine");
+            var diet = firstEntityValue(context, "diet");
+            var intolerances = firstEntityValue(context, "intolerances");
 
-        var InstructionsRequired = true;
-        var number = 1;
+            var InstructionsRequired = true;
+            var number = 1;
 
-        //Intolerances
-        if (intolerances) {
-            intolerances = ''
-            for (var u of context.intolerances) {
-                intolerances.log(u.value);
-                intolerances += u.value + ',';
-            }
-            intolerances = intolerances.slice(0, -1);
-        }
-        //Cuisine
-        if (cuisine) {
-            cuisine = ''
-            for (var u of context.cuisine) {
-                console.log(u.value);
-                cuisine += u.value + ',';
-            }
-            cuisine = cuisine.slice(0, -1);
-        }
-        //includeIngredients
-        if (includeIngredients) {
-            includeIngredients = ''
-            for (var u of context.ingredients) {
-                console.log(u.value);
-                includeIngredients += u.value + ',';
-            }
-            includeIngredients = includeIngredients.slice(0, -1);
-        }
-        //query
-        if (query) {
-            query = ''
-            for (var u of context.query) {
-                console.log(u.value);
-                query += u.value + ',';
-            }
-            if (flavor) {
-                for (var u of context.flavor) {
-                    console.log(u.value);
-                    query += u.value + ',';
-                }
-            }
-            query = query.slice(0, -1);
-        }
-        //type
-        if (type) {
-            type = ''
-            for (var u of context.type) {
-                console.log(u.value);
-                type += u.value + ',';
-            }
-            type = type.slice(0, -1);
-        }
-
-        console.log("type: " + type + " query: " + query + " flavour: " + flavor + " ingredients: " + includeIngredients + " cuisine: " + cuisine);
-        var result = QueryRecipeApi(type, query, flavor, includeIngredients, cuisine);
-        console.log(result);
-        context.recipe = result;
-        
-        delete context.type;
-        delete context.query;
-        delete context.flavor;
-        delete context.includeIngredients;
-        delete context.cuisine;
-        
-        return resolve(context);
+            return QueryRecipeApi(type, query, flavor, includeIngredients, cuisine, diet, InstructionsRequired, number, resolve, context);
         });
     },
     helper({context, entities}) {
-    return new Promise(function(resolve, reject) {
-      
-        var type = firstEntityValue(entities, "type")
-        var query = firstEntityValue(entities, "query")
-        var flavor = firstEntityValue(entities, "flavor")
-        var includeIngredients = firstEntityValue(entities, "ingredients")
-        var cuisine = firstEntityValue(entities, "cuisine")
-        
-        if(type){
-            context.type = entities.type;
-        }
-        if(query){
-            context.query = entities.query;
-        }
-        if(flavor){
-            context.flavor = entities.flavor;
-        }
-        if(includeIngredients){
-            context.includeIngredients = entities.includeIngredients;
-        }
-        if(cuisine){
-            context.cuisine = entities.cuisine;
-        }
-        return resolve(context);
-    });
-    },
+        return new Promise(function (resolve, reject) {
+
+            var type = firstEntityValue(entities, "type");
+            var query = firstEntityValue(entities, "query");
+            var flavor = firstEntityValue(entities, "flavor");
+            var includeIngredients = firstEntityValue(entities, "ingredients");
+            var cuisine = firstEntityValue(entities, "cuisine");
+            var diet = firstEntityValue(context, "diet");
+            var intolerances = firstEntityValue(context, "intolerances");
+
+            if (type) {
+                context.type = entities.type;
+            }
+            if (query) {
+                context.query = entities.query;
+            }
+            if (flavor) {
+                context.flavor = entities.flavor;
+            }
+            if (includeIngredients) {
+                context.includeIngredients = entities.includeIngredients;
+            }
+            if (cuisine) {
+                context.cuisine = entities.cuisine;
+            }
+            if (diet) {
+                context.diet = entities.diet;
+            }
+            if (intolerances) {
+                context.intolerances = entities.intolerances;
+            }
+            return resolve(context);
+        });
+    }, 
+    null({sessionId, context, text, entities}) {
+        console.log("null, not implemented for this entity!");
+    }
 };
 
 // Setting up our bot
@@ -365,8 +324,7 @@ app.post('/webhook', (req, res) => {
                     const sessionId = findOrCreateSession(sender);
 
                     // We retrieve the message content
-                    const attachments = event.message.attachments;
-                    const text = event.message.text;
+                    const {text, attachments} = event.message;
 
                     if (attachments) {
                         // We received an attachment
@@ -375,7 +333,7 @@ app.post('/webhook', (req, res) => {
                             .catch(console.error);
                     } else if (text) {
                         // We received a text message
-                        console.log('Recieved text message: '+text);
+
                         // Let's forward the message to the Wit.ai Bot Engine
                         // This will run all actions until our bot has nothing left to do
                         wit.runActions(
@@ -409,6 +367,7 @@ app.post('/webhook', (req, res) => {
     }
     res.sendStatus(200);
 });
+
 
 /*
  * This path is used for account linking. The account linking call-to-action
@@ -1130,22 +1089,34 @@ module.exports = app;
 //-----------------------------------------------------------------
 // Spoontacular Specific Api
 
-function QueryRecipeApi(type, meal, flavour, ingredients, cuisine) {
-    var url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?";
-    if (type) { url += "&type=" + type };
-    if (meal) { url += "&meal=" + meal };
-    if (flavour) { url += "&flavour=" + flavour };
-    if (ingredients) { url += "&ingredients=" + ingredients };
-    if (cuisine) { url += "&cuisine=" + cuisine };
-
+function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, InstructionsRequired, number, resolve, context) {
+    var url = "https://api.edamam.com/search?";
+    //if (type) { url += "&type=" + type };
+    url += "&app_id=" + EDAMAM_APP_ID;
+    url += "&app_key=" + EDAMAM_APP_KEY;
+    url += "&from=0&to=3"; 
+    if (meal) { url += "&q=" + meal };
+    url = url.replace('&', '');
     console.log("Url: " + url);
-    // These code snippets use an open-source library. http://unirest.io/nodejs
-    /*unirest.get(url)
-        .header("X-Mashape-Key", SPOONACULAR_API_KEY)
-        .header("Accept", "application/json")
+    unirest.get(url)
         .end(function (result) {
-            console.log(result.status, result.headers, result.body);
-            return result.body;
+            context.recipe = "";
+            if (result.body) {
+                var hits = result.body.hits;
+                console.log(hits);
+                for (var i = 0; i < hits.length; i++) {
+                    var hit = hits[i];
+                    context.recipe += hit.recipe.label + "\n";
+                    context.recipe += hit.recipe.url + "\n\n";
+                }
+            }
+            context.done = true;
+            delete context.type;
+            delete context.query;
+            delete context.flavor;
+            delete context.includeIngredients;
+            delete context.cuisine;
+            delete context.diet;
+            return resolve(context);
         });
-    */
 }
