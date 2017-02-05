@@ -1100,6 +1100,19 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
     console.log("Url: " + url);
     unirest.get(url)
         .end(function (result) {
+            context.querybreakdown = "";
+            context.querybreakdown += "Type: ";
+            context.querybreakdown += type ? type : "N/A";
+            context.querybreakdown += "\nMeal: ";
+            context.querybreakdown += meal ? meal : "N/A";
+            context.querybreakdown += "\nFlavour: ";
+            context.querybreakdown += flavour ? flavour : "N/A";
+            context.querybreakdown += "\nIngredients: ";
+            context.querybreakdown += ingredients ? ingredients : "N/A";
+            context.querybreakdown += "\nCuisine: ";
+            context.querybreakdown += cuisine ? cuisine : "N/A";
+            context.querybreakdown += "\nDiet: ";
+            context.querybreakdown += diet ? diet : "N/A";
             context.recipe = "";
             if (result.body) {
                 var hits = result.body.hits;
