@@ -200,6 +200,9 @@ const actions = {
             if (diet) {
                 context.diet = entities.diet;
             }
+            if (health) {
+                context.health = entities.health;
+            }
             if (intolerances) {
                 context.intolerances = entities.intolerances;
             }
