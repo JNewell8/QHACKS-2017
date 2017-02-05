@@ -1133,15 +1133,17 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
             context.recipe = "No results!";
             if (result.body) {
                 var hits = result.body.hits;
-                if (hits.length > 0)
-                    context.recipe = "";
-                console.log(hits);
-                for (var i = 0; i < hits.length; i++) {
-                    var hit = hits[i];
-                    context.recipe += hit.recipe.label + "\n";
-                    context.recipe += "Calories: " + hit.recipe.calories + "\n";
-                    context.recipe += "Servings: " + hit.recipe.yield + "\n";
-                    context.recipe += hit.recipe.url + "\n\n";
+                if (hits) {
+                    if (hits.length > 0)
+                        context.recipe = "";
+                    console.log(hits);
+                    for (var i = 0; i < hits.length; i++) {
+                        var hit = hits[i];
+                        context.recipe += hit.recipe.label + "\n";
+                        context.recipe += "Calories: " + hit.recipe.calories + "\n";
+                        context.recipe += "Servings: " + hit.recipe.yield + "\n";
+                        context.recipe += hit.recipe.url + "\n\n";
+                    }
                 }
             }
             context.done = true;
