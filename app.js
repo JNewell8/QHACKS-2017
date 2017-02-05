@@ -348,12 +348,13 @@ app.post('/webhook', (req, res) => {
                             // Based on the session state, you might want to reset the session.
                             // This depends heavily on the business logic of your bot.
                             // Example:
-                            // if (context['done']) {
-                            //   delete sessions[sessionId];
-                            // }
-
-                            // Updating the user's current session state
-                            sessions[sessionId].context = context;
+                             if (context['done']) {
+                               delete sessions[sessionId];
+                            }
+                             else {
+                                 // Updating the user's current session state
+                                 sessions[sessionId].context = context;
+                             }
                         })
                             .catch((err) => {
                                 console.error('Oops! Got an error from Wit: ', err.stack || err);
@@ -1126,7 +1127,7 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
             context.querybreakdown += diet ? diet : "N/A";
             context.querybreakdown += "\nHealth: ";
             context.querybreakdown += health ? health : "N/A";
-            context.recipe = "";
+            context.recipe = "No results!";
             if (result.body) {
                 var hits = result.body.hits;
                 console.log(hits);
@@ -1137,9 +1138,6 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, Instruc
                     context.recipe += "Servings: " + hit.recipe.yield + "\n";
                     context.recipe += hit.recipe.url + "\n\n";
                 }
-            }
-            else {
-                context.recipe = "No results!";
             }
             context.done = true;
             delete context.type;
