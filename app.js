@@ -178,8 +178,9 @@ const actions = {
             var flavor = firstEntityValue(entities, "flavor");
             var includeIngredients = firstEntityValue(entities, "ingredients");
             var cuisine = firstEntityValue(entities, "cuisine");
-            var diet = firstEntityValue(context, "diet");
-            var intolerances = firstEntityValue(context, "intolerances");
+            var diet = firstEntityValue(entities, "diet");
+            var health = firstEntityValue(entities, "health");
+            var intolerances = firstEntityValue(entities, "intolerances");
 
             if (type) {
                 context.type = entities.type;
