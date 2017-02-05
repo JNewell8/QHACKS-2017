@@ -146,7 +146,7 @@ const actions = {
     getRecipe(context, entities) {
     return new Promise(function(resolve, reject) {
         var type = firstEntityValue(entities, "type")
-        var query = firstEntityValue(entities, "meal")
+        var query = firstEntityValue(entities, "query")
         var flavor = firstEntityValue(entities, "flavor")
         var includeIngredients = firstEntityValue(entities, "ingredients")
         var cuisine = firstEntityValue(entities, "cuisine")
@@ -211,9 +211,42 @@ const actions = {
         var result = QueryRecipeApi(type, query, flavor, includeIngredients, cuisine);
         console.log(result);
         context.recipe = result;
-        delete context.missingMealTime;
+        
+        delete context.type;
+        delete context.query;
+        delete context.flavor;
+        delete context.includeIngredients;
+        delete context.cuisine;
+        
         return resolve(context);
         });
+    },
+    helper({context, entities}) {
+    return new Promise(function(resolve, reject) {
+      
+        var type = firstEntityValue(entities, "type")
+        var query = firstEntityValue(entities, "query")
+        var flavor = firstEntityValue(entities, "flavor")
+        var includeIngredients = firstEntityValue(entities, "ingredients")
+        var cuisine = firstEntityValue(entities, "cuisine")
+        
+        if(type){
+            context.type = entities.type;
+        }
+        if(query){
+            context.query = entities.query;
+        }
+        if(flavor){
+            context.flavor = entities.flavor;
+        }
+        if(includeIngredients){
+            context.includeIngredients = entities.includeIngredients;
+        }
+        if(cuisine){
+            context.cuisine = entities.cuisine;
+        }
+        return resolve(context);
+    });
     },
 };
 
