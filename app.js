@@ -1138,11 +1138,11 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
                     for (var i = 0; i < hits.length; i++) {
                         var hit = hits[i];
                         context.recipe += hit.recipe.label + "\n";
-                        context.recipe += "Calories: " + hit.recipe.calories + "\n";
+                        context.recipe += "Calories: " + Math.Round(hit.recipe.calories) + "\n";
                         context.recipe += "Servings: " + hit.recipe.yield + "\n";
                         for (var j = 0; j < hit.recipe.dietLabels.length; j++) {
                             console.log(hit.recipe.dietLabels[j]);
-                            //context.recipe += hit.recipe.dietLabels[j] + " ";
+                            context.recipe += hit.recipe.dietLabels[j] + " ";
                         }
                         //context.recipe += "\n";
                         for (var j = 0; j < hit.recipe.healthLabels.length; j++) {
