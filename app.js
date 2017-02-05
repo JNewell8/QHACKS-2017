@@ -1161,7 +1161,7 @@ function QueryRecipeApi(type, meal, flavour, ingredients, cuisine, diet, health,
                             console.log(hit.recipe.healthLabels[healthLabel]);
 
                         }
-                        else {
+                        else if (dietLabel > -1){
                             context.recipe += "\n";
                         }
                         context.recipe += hit.recipe.url + "\n\n";
